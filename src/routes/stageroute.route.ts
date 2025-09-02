@@ -4,19 +4,19 @@ import { createStageRoute, deleteStageRoute, getAllStageRoutes, getStageRoute, r
 export const stageRouteRoutes = () => {
   const router = Router();
 
-  router.post('/v1/stage-routes', createStageRoute);
+  router.post('/v1/routes', createStageRoute);
 
-  router.get('/v1/stage-routes', getAllStageRoutes);
+  router.get('/v1/routes', getAllStageRoutes);
 
-  router.get('/v1/stage-routes/:id', getStageRoute);
+  router.get('/v1/routes/:id', getStageRoute);
 
-  router.put('/v1/stage-routes/:id', updateStageRoute);
+  router.put('/v1/routes/:id', updateStageRoute);
 
-  router.delete('/v1/stage-routes/:id', deleteStageRoute);
+  router.delete('/v1/routes/:id', deleteStageRoute);
 
-  router.delete('/v1/stage-routes', deleteStageRoute);
+  router.delete('/v1/routes', deleteStageRoute);
 
-  router.post('/v1/stage-routes/seed', reseedStageRoutes);
+  router.post('/v1/routes/seed', reseedStageRoutes);
 
   return router;
 };
