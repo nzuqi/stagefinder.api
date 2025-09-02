@@ -60,6 +60,19 @@ export const createStageRoute = asyncHandler(async (req: Request, res: Response)
 export const getAllStageRoutes = asyncHandler(async (req: Request, res: Response) => {
   const { filter, pagination, sort } = buildQueryOptions(req, ['name', 'source', 'terminus', 'stops', 'sacco', 'createdAt', 'updatedAt']);
 
+  if (!req.query?.limit) {
+    const data = await StageRoute.find(filter).sort(sort).exec();
+
+    return responseHandler(
+      res.status(200),
+      {
+        data,
+        message: 'Successful',
+      },
+      ['name', 'source', 'terminus', 'stops', 'sacco', 'createdAt', 'updatedAt'],
+    );
+  }
+
   const [data, total] = await Promise.all([
     StageRoute.find(filter).sort(sort).skip(pagination.skip).limit(pagination.limit).exec(),
     StageRoute.countDocuments(filter),
