@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "bc54c57b-b872-4b5f-9ca6-ac6fd4e106f2",
+		"name": "StageFinder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14678633"
+	},
+	"item": [
+		{
+			"name": "Get all stage routes",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes?sortBy=createdAt&sortOrder=desc",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "createdAt"
+						},
+						{
+							"key": "sortOrder",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create stage route",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Testing\",\n    \"source\": {\n        \"name\": \"Test source\",\n        \"lat\": 0,\n        \"lng\": 0\n    },\n    \"terminus\": {\n        \"name\": \"Test terminus\",\n        \"lat\": 0,\n        \"lng\": 0\n    },\n    \"stops\": [\n        {\n            \"name\": \"Test stop 1\",\n            \"lat\": 0,\n            \"lng\": 0\n        },\n        {\n            \"name\": \"Test stop 2\",\n            \"lat\": 0,\n            \"lng\": 0\n        }\n    ],\n    \"sacco\": \"sacco\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get stage route",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes/68b664609da2e6e01e46f59b",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes",
+						"68b664609da2e6e01e46f59b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update stage route",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Testing updated\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes/68b66a12e2361ee5e00cd4e9",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes",
+						"68b66a12e2361ee5e00cd4e9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete stage route",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes/68b66a12e2361ee5e00cd4e9",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes",
+						"68b66a12e2361ee5e00cd4e9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete stage routes",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ids\": [\"68b66a12e2361ee5e00cd4e9\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Seed stage routes",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/routes/seed",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"routes",
+						"seed"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:4500",
+			"type": "string"
+		}
+	]
+}
