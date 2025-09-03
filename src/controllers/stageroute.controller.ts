@@ -60,36 +60,49 @@ export const createStageRoute = asyncHandler(async (req: Request, res: Response)
 export const getAllStageRoutes = asyncHandler(async (req: Request, res: Response) => {
   const { filter, pagination, sort } = buildQueryOptions(req, ['name', 'source', 'terminus', 'stops', 'sacco', 'createdAt', 'updatedAt']);
 
-  if (!req.query?.limit) {
-    const data = await StageRoute.find(filter).sort(sort).exec();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transformStageRoute = (doc: any, indexOffset = 0) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mapStop = (stop: any, idx: number) => ({
+      id: idx + 1,
+      name: stop.name,
+      lat: stop.lat,
+      lng: stop.lng,
+    });
 
-    return responseHandler(
-      res.status(200),
-      {
-        data,
-        message: 'Successful',
-      },
-      ['name', 'source', 'terminus', 'stops', 'sacco', 'createdAt', 'updatedAt'],
-    );
+    return {
+      id: indexOffset, // numeric id (from query position, not Mongo _id)
+      name: doc.name,
+      source: doc.source ? mapStop(doc.source, 0) : null,
+      terminus: doc.terminus ? mapStop(doc.terminus, 0) : null,
+      stops: Array.isArray(doc.stops) ? doc.stops.map((s: StopData, i: number) => mapStop(s, i)) : [],
+      sacco: { name: doc.sacco ? doc.sacco : '' },
+    };
+  };
+
+  if (!req.query?.limit) {
+    const docs = await StageRoute.find(filter).sort(sort).lean().exec();
+
+    const data = docs.map((doc, idx) => transformStageRoute(doc, idx + 1));
+
+    return responseHandler(res.status(200), data);
   }
 
-  const [data, total] = await Promise.all([
-    StageRoute.find(filter).sort(sort).skip(pagination.skip).limit(pagination.limit).exec(),
+  const [docs, total] = await Promise.all([
+    StageRoute.find(filter).sort(sort).skip(pagination.skip).limit(pagination.limit).lean().exec(),
     StageRoute.countDocuments(filter),
   ]);
 
-  return responseHandler(
-    res.status(200),
-    {
-      page: pagination.page,
-      limit: pagination.limit,
-      total,
-      totalPages: Math.ceil(total / pagination.limit),
-      data,
-      message: 'Successful',
-    },
-    ['name', 'source', 'terminus', 'stops', 'sacco', 'createdAt', 'updatedAt'],
-  );
+  const data = docs.map((doc, idx) => transformStageRoute(doc, (pagination.skip ?? 0) + idx + 1));
+
+  return responseHandler(res.status(200), {
+    page: pagination.page,
+    limit: pagination.limit,
+    total,
+    totalPages: pagination.limit > 0 ? Math.ceil(total / pagination.limit) : 0,
+    data,
+    message: 'Successful',
+  });
 });
 
 export const getStageRoute = asyncHandler(async (req: Request, res: Response) => {
