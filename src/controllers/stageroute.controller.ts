@@ -76,7 +76,7 @@ export const getAllStageRoutes = asyncHandler(async (req: Request, res: Response
       source: doc.source ? mapStop(doc.source, 0) : null,
       terminus: doc.terminus ? mapStop(doc.terminus, 0) : null,
       stops: Array.isArray(doc.stops) ? doc.stops.map((s: StopData, i: number) => mapStop(s, i)) : [],
-      sacco: { name: doc.sacco ? doc.sacco : null },
+      sacco: { name: doc.sacco ? doc.sacco : '' },
     };
   };
 
