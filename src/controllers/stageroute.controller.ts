@@ -60,11 +60,13 @@ export const createStageRoute = asyncHandler(async (req: Request, res: Response)
 export const getAllStageRoutes = asyncHandler(async (req: Request, res: Response) => {
   const { filter, pagination, sort } = buildQueryOptions(req, ['name', 'source', 'terminus', 'stops', 'sacco', 'createdAt', 'updatedAt']);
 
+  let stopCounter: number = 1;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const transformStageRoute = (doc: any, indexOffset = 0) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const mapStop = (stop: any, idx: number) => ({
-      id: idx + 1,
+    const mapStop = (stop: any) => ({
+      id: stopCounter++,
       name: stop.name,
       lat: stop.lat,
       lng: stop.lng,
@@ -73,9 +75,9 @@ export const getAllStageRoutes = asyncHandler(async (req: Request, res: Response
     return {
       id: indexOffset, // numeric id (from query position, not Mongo _id)
       name: doc.name,
-      source: doc.source ? mapStop(doc.source, 0) : null,
-      terminus: doc.terminus ? mapStop(doc.terminus, 0) : null,
-      stops: Array.isArray(doc.stops) ? doc.stops.map((s: StopData, i: number) => mapStop(s, i)) : [],
+      source: doc.source ? mapStop(doc.source) : null,
+      terminus: doc.terminus ? mapStop(doc.terminus) : null,
+      stops: Array.isArray(doc.stops) ? doc.stops.map((s: StopData) => mapStop(s)) : [],
       sacco: { name: doc.sacco ? doc.sacco : '' },
     };
   };
